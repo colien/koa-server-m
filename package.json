@@ -1,0 +1,32 @@
+{
+  "name": "node_koa_oms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "local": "nodemon app.js --env local",
+    "dev": "pm2 start pm2-dev.json --env dev",
+    "prod": "pm2 start pm2-prod.json --env prod",
+    "stop": "pm2 stop colien-m",
+    "restart": "pm2 restart colien-m"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.2",
+    "http-proxy-middleware": "^0.19.1",
+    "koa": "^2.7.0",
+    "koa-log4": "^2.3.2",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^6.2.0",
+    "koa2-connect": "^1.0.2",
+    "nodemon": "^2.0.2",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5"
+  },
+  "devDependencies": {
+    "minimist": "^1.2.0"
+  }
+}

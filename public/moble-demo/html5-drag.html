@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+		*{
+			padding:0;margin:0;
+		}
+		body{font-family:'微软雅黑';font-size:12px;line-height:12px;font-weight:400;padding:0;margin:0;}
+		ol,ul{list-style:none}
+		
+		.nav-box{
+			height:40px;
+			display:flex;
+			justify-content: space-between;
+			align-items:center;
+			background:#4a8df0;
+			padding: 0 2%;
+		}
+		.location-content{width:60px;height:20px;background:#f4f4f4;}
+		.nav-search{position:relative;}
+		.from-input-search{
+			vertical-align: middle;
+			border: 0;
+			height: 26px;
+			line-height: 26px;
+			border-radius: 2px;
+			text-indent: 30px;
+			outline: none;}
+		.search-icon{width:20px;height:20px;vertical-align: middle;
+			position:absolute;top:3px;left:3px;
+		}
+		.optaiter{width:20px;height:20px;background:#ccc;}
+		
+        .window-box{
+            width: 100%;
+            background:#f7f7f7;
+			overflow: auto;
+        }
+		.common-box,.life-box,.wealth-box{
+			width:96%;
+			margin:10px auto;
+			background:#fff;
+			border-radius:4px;
+			box-sizing:border-box;
+			padding:10px;
+		}
+		.box-title{
+			padding:0px 5px 10px 5px;
+			font-size:16px;line-height: 16px;
+			border-bottom:0.5px solid #eee;
+		}
+		.box-content-list{
+			display:flex;
+			justify-content:flex-start;
+			min-height:60px;
+			flex-wrap: wrap;
+		}
+		.list-item{
+			padding:5px;
+			box-sizing:border-box;
+			width:100px;
+		}
+		.item-img{display:block;
+			width:20px;
+			height:20px;
+			margin:10px auto 5px auto;
+			background:#aaa;
+		}
+		.item-name{display:block;
+			text-align:center;
+			line-height:16px;
+		}
+		
+    </style>
+</head>
+<body>
+<nav class="nav-box">
+	<div class="location-content">
+		<span></span>
+		<span class="icon-down"><span>
+	</div>
+	<div class="nav-search">
+		<img src="./loading.gif" class="search-icon"/>
+		<input type="text" class="from-input-search"/>
+	</div>
+	<div class="optaiter">
+		<span class=""></span>
+	</div>
+</nav>
+<div class="window-box">
+	<section class="common-box">
+		<div class="box-title common-title">我的应用</div>
+		<ul class="box-content-list common-list">
+			
+		</ul>
+	</section>
+	<section class="life-box">
+		<div class="box-title">生活服务</div>
+		<ul class="box-content-list">
+			<li class="list-item">
+				<span class="item-img"></span>
+				<span class="item-name">电影演出</span>
+			</li>
+			<li class="list-item">
+				<span class="item-img"></span>
+				<span class="item-name">美食</span>
+			</li>
+			<li class="list-item">
+				<span class="item-img"></span>
+				<span class="item-name">滴滴出行</span>
+			</li>
+			<li class="list-item">
+				<span class="item-img"></span>
+				<span class="item-name">火车票</span>
+			</li>
+		</ul>
+	</section>
+	<section class="wealth-box">
+		<div class="box-title">财富管理</div>
+		<ul class="box-content-list">
+			<li class="list-item">
+				<span class="item-img"></span>
+				<span class="item-name">余额宝</span>
+			</li>
+			<li class="list-item">
+				<span class="item-img"></span>
+				<span class="item-name">花呗</span>
+			</li>
+			<li class="list-item">
+				<span class="item-img"></span>
+				<span class="item-name">芝麻信用</span>
+			</li>
+			<li class="list-item">
+				<span class="item-img"></span>
+				<span class="item-name">保险</span>
+			</li>
+		</ul>
+	</section>
+
+</div>
+
+<script>
+	var commonListBox = document.querySelectorAll('.common-box .box-content-list');
+	var lifeBoxItem = document.querySelectorAll('.life-box .list-item');
+	var wealthBoxItem = document.querySelectorAll('.wealth-box .list-item');
+	for(var i = 0; i < lifeBoxItem.length ; i++){
+		bindDragEvent(lifeBoxItem[i]);
+	}
+	for(var i = 0; i < wealthBoxItem.length ; i++){
+		bindDragEvent(wealthBoxItem[i]);
+	}
+	bindDropEvent(commonListBox[0]);
+	
+	// 绑定 drop 事件
+	function bindDropEvent(ele){
+		if(ele.addEventListener){
+			ele.addEventListener('dragenter',dragenterHandler);
+			ele.addEventListener('dragover',dragoverHandler);
+			ele.addEventListener('dragleave',dragleaveHandler);
+			ele.addEventListener('drop',dropHandler);
+		}else if(element.attachEvent){
+			ele.attachEvent('ondragenter',dragenterHandler);
+			ele.attachEvent('ondragover',dragoverHandler);
+			ele.attachEvent('ondragleave',dragleaveHandler);
+			ele.attachEvent('ondrop',dropHandler);
+		}
+		function dragenterHandler(event){
+			console.log("dragenter");
+		}
+		function dragoverHandler(event){
+			console.log("dragover");
+			event.preventDefault();
+		}
+		function dragleaveHandler(event){
+			console.log("dragleave");
+		}
+		function dropHandler(event){
+			console.log("drop");
+			var source = document.getElementById(this.getAttribute('data-origin'));
+			this.appendChild(source);
+			removeDragEvent(source);
+		}
+	}
+
+	// 绑定 drag 事件
+	function bindDragEvent(ele){
+		ele.setAttribute('draggable','true');
+		ele.setAttribute('id',uuid2(8) );
+		if(ele.addEventListener){
+			ele.addEventListener('dragstart',dragstartHandler);
+			ele.addEventListener('drag',dragHandler);
+			ele.addEventListener('dragend',dragendHandler);
+		}else if(element.attachEvent){
+			ele.attachEvent('ondragstart',dragstartHandler);
+			ele.attachEvent('ondrag',dragHandler);
+			ele.attachEvent('ondragend',dragendHandler);
+		}
+		function dragstartHandler(event){
+			console.log("start");
+			commonListBox[0].setAttribute('data-origin', this.getAttribute('id'));
+			var img = new Image(); 
+			img.src = './image/loading.gif';
+			event.dataTransfer.setDragImage(img,10,10);
+			this.style.opacity = 0.2;
+		}
+		function dragHandler(event){
+			console.log("drag");
+		}
+		function dragendHandler(event){
+			console.log("dragend");
+			this.style.opacity = 1;
+		}
+	}
+	
+
+	// 移除 drag 事件
+	function removeDragEvent(ele){
+		ele.removeAttribute('draggable');
+		if (ele.removeEventListener){
+			ele.removeEventListener('dragstart',function(){},false);
+			ele.removeEventListener('drag',function(){},false);
+			ele.removeEventListener('dragend',function(){},false);
+		}else if(ele.deattachEvent){
+			ele.deattachEvent('ondragstart', function(){},false);
+			ele.deattachEvent('ondrag',function(){},false);
+			ele.deattachEvent('ondragend',function(){},false);
+		}
+	}
+
+
+	/*
+		指定长度和基数
+	*/
+	function uuid2(len, radix) {
+		var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+		var uuid = [],
+			i;
+		radix = radix || chars.length;
+
+		if (len) {
+			// Compact form
+			for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+		} else {
+			// rfc4122, version 4 form
+			var r;
+
+			// rfc4122 requires these characters
+			uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+			uuid[14] = '4';
+
+			// Fill in random data.  At i==19 set the high bits of clock sequence as
+			// per rfc4122, sec. 4.1.5
+			for (i = 0; i < 36; i++) {
+				if (!uuid[i]) {
+					r = 0 | Math.random() * 16;
+					uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+				}
+			}
+		}
+
+		return uuid.join('');
+	}
+
+
+</script>
+</body>
+</html>

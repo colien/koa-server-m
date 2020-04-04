@@ -1,0 +1,23 @@
+{ 
+	"apps" : [{
+		"name": "colien-m",
+		"script" : "./app.js",
+		"instances" : 2, 
+		"exec_mode" : "cluster", 
+		"autorestart" : true,
+		"max_memory_restart" : "100M",
+		"min_uptime": "60s",
+		"max_restarts": 30,
+		"watch" : false,
+		"log_date_format": "YYYY-MM-DD HH:mm", 
+		"error_file" : "../pm2-log/colien-m-err.log",
+		"out_file": "../pm2-log/colien-m-out.log",
+		"pid_file": "../pm2-log/colien-m.pid",
+		env_prod: {
+			"PORT" : 8001,
+			"NODE_ENV" : "prod",
+			"LOG_DIR" : "../",
+			"PROXY_ENV" : ""
+		}
+	}]
+} 

@@ -1,0 +1,22 @@
+{
+    "restartable": "rs",
+    "colours": true,
+    "ignore": [	
+        ".git",
+        ".svn",
+	"node_modules/",
+	"logs/"
+    ],
+    "verbose": true,
+    "execMap": {
+        "js": "node --harmony"
+    },
+    "watch": [ ],
+    "env": {
+	"PORT": 80,
+        "NODE_ENV": "local",
+	"LOG_DIR" : "",
+	"PROXY_ENV" : "deva"
+    },
+    "ext": "js json"
+}
