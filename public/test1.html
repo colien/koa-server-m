@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>测试PC浏览器定位</title>
+  <style>
+	#allmap{
+		width: 400px;
+		height: 400px;
+	}
+  </style>
+ </head>
+ <body> 
+  <p id="demo">点击这个按钮，通过H5获得您的坐标：</p> 
+  <div id="allmap"></div> 
+  <button onclick="getLocation()">H5测试</button> 
+
+ 
+
+  <script>
+	var bdMap = null;
+	function initialize() { 
+		var map = new BMapGL.Map('allmap'); 
+		map.centerAndZoom(new BMapGL.Point(121.491, 31.233), 11); 
+		map.enableScrollWheelZoom(true);	//开启鼠标滚轮缩放
+		//map.setMapType(BMAP_EARTH_MAP);   // 设置地图类型为地球模式
+		map.setHeading(64.5);   //设置地图旋转角度
+		map.setTilt(73);       //设置地图的倾斜角度
+		
+		var zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
+		map.addControl(zoomCtrl);   
+		var opts = {offset: new BMapGL.Size(150, 5)}
+		map.addControl(new BMapGL.ScaleControl(opts));
+		map.setMapStyleV2({     
+		  styleId: '3d71dc5a4ce6222d3396801dee06622d'
+		});
+		//bdMap = map;
+	} 
+		
+	function loadScript() { 
+	  var script = document.createElement("script"); 
+	  script.src = "https://api.map.baidu.com/api?v=1.0&type=webgl&ak=u0WhAMSs9PHnrAvX19tOAKblZ8rdXGm6&callback=initialize";
+	  document.body.appendChild(script); 
+	} 
+	/* H5定位方法 */		
+	var x = document.getElementById("demo");		
+	function getLocation() {		
+		if (navigator.geolocation) {				
+			navigator.geolocation.getCurrentPosition(showPosition,showError);
+		} else {				
+			console.log("请求失败")			
+		}
+		//bdMap();
+	}		
+	function showPosition(position) {		
+		console.log('test', position);	
+	}		
+	function showError(error) {			
+		console.log("H5错误编码  " + error.code) 			
+		switch (error.code) {			
+			case error.PERMISSION_DENIED:				
+				x.innerHTML = "User denied the request for Geolocation."				
+				break;			
+			case error.POSITION_UNAVAILABLE:				
+				x.innerHTML = "Location information is unavailable."				
+				break;			
+			case error.TIMEOUT:				
+				x.innerHTML = "The request to get user location timed out."				
+				break;			
+			case error.UNKNOWN_ERROR:				
+				x.innerHTML = "An unknown error occurred."				
+				break;			
+		}		
+	}
+	function bdMap(){
+		/* 百度api 通过浏览器定位 */		
+		var geolocation1 = new BMapGL.Geolocation();		
+		geolocation1.getCurrentPosition(function(r) {			
+			if (this.getStatus() == BMAP_STATUS_SUCCESS) {				
+				var mk = new BMapGL.Marker(r.point);				
+				alert('浏览器定位您的位置：' + r.point.lng + ',' + r.point.lat);			
+			} else {				
+				alert('浏览器定位 failed 状态  ' + this.getStatus());			
+			}		
+		}); 				
+		//百度api 通过ip定位		
+		function myFun(result) {			
+			var cityName = result.name;			
+			alert("IP 定位城市:" + cityName+"   经度"+result.center.lng+"   纬度"+result.center.lat);		
+		}	 	
+		var myCity = new BMapGL.LocalCity();		
+		myCity.get(myFun); 					 			
+		//百度api SDK辅助定位		
+		var geolocation = new BMapGL.Geolocation();		
+		// 开启SDK辅助定位		
+		geolocation.enableSDKLocation();		
+		geolocation.getCurrentPosition(function(r) {			
+			if (this.getStatus() == BMAP_STATUS_SUCCESS) {				
+				var mk = new BMapGL.Marker(r.point);				
+				alert('SDK辅助定位 您的位置：' + r.point.lng + ',' + r.point.lat);			
+			} else {				
+				alert('SDK辅助failed  状态' + this.getStatus());			
+			}		
+		}); 	
+	}
+	window.onload = loadScript; 
+</script> 
+<script src="http://api.map.baidu.com/api?v=1.3" type="text/javascript"></script>
+<script src="./convertor.js"></script>
+<script type="text/javascript">
+	if (window.navigator.geolocation) {
+		var options = {
+			enableHighAccuracy: true,
+		};
+		window.navigator.geolocation.getCurrentPosition(handleSuccess, handleError, options);
+	} else {
+		alert("浏览器不支持html5来获取地理位置信息");
+	}
+
+	function handleSuccess(position){
+		// 获取到当前位置经纬度 本例中是chrome浏览器取到的是google地图中的经纬度
+		var lng = position.coords.longitude;
+		var lat = position.coords.latitude;
+		// 调用百度地图api显示
+		var map = new BMap.Map("map");
+		var ggPoint = new BMap.Point(lng, lat);
+		// 将google地图中的经纬度转化为百度地图的经纬度
+		BMap.Convertor.translate(ggPoint, 2, function(point){
+			var marker = new BMap.Marker(point);
+			map.addOverlay(marker);
+			map.centerAndZoom(point, 15);
+		});
+	}
+
+	function handleError(error){
+		console.log('error',error);
+	}
+
+	function position() {
+		//判断浏览器是否支持定位
+		if(navigator.geolocation) {
+			//这里接受两个参数 定位成功则执行第一个函数，否则执行第二个
+			navigator.geolocation.getCurrentPosition(showPosition, showError);
+		} else {
+			alert("不支持定位");
+		};
+	};
+	//接受一个参数 参数为对象
+	function showPosition(position){
+		//position中有一个coords 这个下面 有latitude：纬度  longitude：经度
+		$.ajax({
+		　　type: "get",
+		　　url: "http://api.map.baidu.com/geocoder/v2/?callback=renderReverse&location=" + position.coords.latitude + "," + position.coords.longitude + "&output=json&pois=1&ak=DMCiysDe5wZUpPeTa7xZqUGnoFIUofmi",//这个ak可以去百度地图申请
+		　　async: false,
+		　　dataType:"jsonp",
+		　　success: function(data) {//拿到返回的地址信息
+				console.log( data);
+		　　}
+		});
+	};
+	 
+	//err
+	//接收一个错误参数
+	function showError(error){
+		switch(error.code) {
+		case error.PERMISSION_DENIED:
+		　　alert("定位失败,用户拒绝请求地理定位");
+		　　break;
+		case error.POSITION_UNAVAILABLE:
+		　　alert("定位失败,位置信息是不可用");
+		　　break;
+		case error.TIMEOUT:
+		　　alert("定位失败,请求获取用户位置超时");
+		　　break;
+		case error.UNKNOWN_ERROR:
+		　　alert("定位失败,定位系统失效");
+		　　break;
+		};
+	}
+	position();
+
+</script>
+ </body>
+</html>

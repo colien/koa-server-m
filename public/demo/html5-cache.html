@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" manifest="cache.appcache">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<link rel="stylesheet" href="style/index.css">
+<script type="text/javascript" src="js/index.js"></script>
+</head>
+<body>
+<h1 class="h1">你好网易!!!</h1>
+</body>
+ <script>
+	window.addEventListener('load', function(e) {
+	  window.applicationCache.addEventListener('updateready', function(e) {
+		if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+		  window.applicationCache.swapCache();//手动更新缓存。
+		  //if (confirm('本地缓存已更新，需要刷新画面来获取应用程序最新版本，是否刷新?')) {
+			window.location.reload(); //手动刷新页面
+		  //}
+		} else {
+		  // Manifest didn't changed. Nothing new to server.
+		}
+	  }, false);
+	 
+	}, false);
+ </script>
+</html>

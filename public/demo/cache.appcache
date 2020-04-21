@@ -1,0 +1,15 @@
+CACHE MANIFEST   
+#2019-09-05 v1.0.1  # 版本标识 v1
+
+# 必选 缓存文件
+CACHE:  
+style/index.css   
+js/index.js
+
+# 可选 需要联网
+NETWORK:   
+login.php   
+
+# 可选 失败的重定向
+FALLBACK:   
+/html5/

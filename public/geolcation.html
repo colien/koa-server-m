@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Geolocation Example</title>
+	<script type="text/javascript" >
+		// 扩展API加载完毕后调用onPlusReady回调函数 
+		document.addEventListener('plusready', onPlusReady, false);
+		// 扩展API加载完毕，现在可以正常调用扩展API
+		function onPlusReady(){
+			plus.geolocation.getCurrentPosition(function(p){
+				console.log('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude + '\nAltitude:' + p.coords.altitude);
+			}, function(e){
+				console.log('Geolocation error: ' + e.message);
+			} );
+		}
+		console.log("获取百度定位位置信息:");  
+		plus.geolocation.getCurrentPosition(function getinfo(position){  
+			var str = position.address.city; //获取城市信息  
+			document.getElementById("addr").innerHTML = str;  
+			console.log(str);  
+		}, function(e) {  
+			console.log("获取百度定位位置信息失败：" ,  e.message);  
+		}, {provider: 'baidu'});  
+	</script>
+	</head>
+	<body >
+	</body>
+</html>
+				

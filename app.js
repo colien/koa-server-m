@@ -1,13 +1,14 @@
 const Koa = require("koa");
 const koaStatic = require('koa-static');
 const views = require('koa-views')
+const koaStaticServer = require('koa-static-server')
 const ejs = require('ejs');
 const path = require("path");
 const os = require('os');
 const { logger, accessLogger } = require('./middleware/log-config.js');
-//const authProxy = require("./middleware/authProxy-config.js");
 const catchError = require("./middleware/catchError-config.js");
 const router = require("./router/index.js");
+
 
 var app = new Koa();
 
@@ -25,11 +26,16 @@ app.use(views(__dirname+'/public', {
   extension: 'html',	// 模板文件扩展名
   map : {html:'ejs'},	// 指定渲染的模板引擎, key: 模板文件扩展名(和 extension 保持一致)，value: 使用的引擎类型
 }))
-		
-// http 代理   ==> 没有匹配到路由的就按静态资源请求处理
+
+// http 代理 ==> 没有匹配到路由的就按静态资源请求处理
 //app.use(authProxy());
 // 静态资源处理中间件
 app.use(koaStatic(path.resolve(__dirname, "./public")));
+
+app.use(koaStaticServer({rootDir: 'public/flight', rootPath: '/flight'}));
+app.use(koaStaticServer({rootDir: 'public/plainGame', rootPath: '/game'}));
+app.use(koaStaticServer({rootDir: 'public/moble', rootPath: '/moble'}));
+
 // 注册路由
 app.use(router.routes());
 
