@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <style>
+	.con{min-height:100vh;width:100%;}
+  </style>
+ </head>
+ <body>
+  <div class="con"></div>
+
+  <script>
+	var con = document.querySelector(".con");
+	if (window.DeviceOrientationEvent) {
+	  window.addEventListener('deviceorientation', DeviceOrientationHandler, false);
+	} else {
+	  con.before("您的浏览器不支持DeviceOrientation");
+	}
+	function DeviceOrientationHandler(event) {
+	  var alpha = event.alpha,
+		beta = event.beta,
+		gamma = event.gamma,
+		webkitCompassHeading = event.webkitCompassHeading;
+	  if (alpha != null || beta != null || gamma != null) {
+		//判断屏幕方向
+		if (gamma > 0) {
+		  con.before("向右倾斜" + gamma);
+		} else {
+		  con.before("向左倾斜" + gamma);
+		}
+		if (beta > 0) {
+		  con.before("向前倾斜" + beta)
+		} else {
+		  con.before("向后倾斜" + beta)
+		}
+		var headNum = Math.round(Math.round(webkitCompassHeading / 45) + 7) % 8;
+		switch (headNum) {
+		  case 0:
+			head = '东北';
+			break;
+		  case 1:
+			head = '东';
+			break;
+		  case 2:
+			head = '东南';
+			break;
+		  case 3:
+			head = '南';
+			break;
+		  case 4:
+			head = '西南';
+			break;
+		  case 5:
+			head = '西';
+			break;
+		  case 6:
+			head = '西北';
+			break;
+		  case 7:
+			head = '北';
+		}
+		con.before(head + '   ' + webkitCompassHeading) 
+	  } else {
+		con.before("您的浏览器不支持DeviceOrientation");
+	  }
+	}
+  </script>
+ </body>
+</html>

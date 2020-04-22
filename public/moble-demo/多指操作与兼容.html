@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Document</title>
+  <style>
+      #con{
+          width: 200px;
+          height: 200px;
+          line-height: 100px;
+          text-align: center;
+          font-size: 48px;
+          color: black;
+          position: absolute;
+          top: 100px;
+          left: 100px;
+          background: yellowgreen;
+      }
+  </style>
+</head>
+<body>
+    <div id="con">
+
+    </div>
+</body>
+<script>
+    // document.addEventListener("touchstart" ,(e)=>{
+    //     var e = e || window.event;
+    //         e.preventDefault(0);
+    // })
+    function $my(id){
+        return document.getElementById(id);
+    }
+    window.onload = () =>{
+        var con = $my("con");
+        // 两个或两个以上手指触碰到元素
+        con.addEventListener("gesturestart", (e)=>{
+            con.innerHTML = "两个手指";
+        })
+
+         // 两个或两个以上手指触碰到元素 位置发生移动
+         con.addEventListener("gesturechange", (e)=>{
+            con.innerHTML = "位置发生移动";
+        })
+         // 两个或两个以上手指触碰到元素 手指离开了
+         con.addEventListener("gestureend", (e)=>{
+            con.innerHTML = "手指离开";
+        })
+    }
+</script>
+</html>

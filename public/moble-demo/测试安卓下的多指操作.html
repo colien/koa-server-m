@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Document</title>
+        <style>
+            #con{
+                width: 300px;
+                height: 300px;
+                text-align: center;
+                font-size: 48px;
+                color: black;
+                position: absolute;
+                top: 50px;
+                left: 50px;
+                background: greenyellow;
+            }
+        </style>
+        <script src="./android.js"></script>
+    </head>
+    <body>
+        <div id="con">
+            <p id="p1">1</p>
+            <p id="p2">2</p>
+            <p id="p3">3</p>
+        </div>
+        <script>
+            var  con = document.getElementById('con');
+            var p1 = document.getElementById("p1");
+            var p2 = document.getElementById("p2");
+            var p3 = document.getElementById("p3");
+            gesture(con,{
+                start:function (en) {
+                  p1.innerHTML = "多指事件";
+                },
+                change:function (event) {
+                  p2.innerHTML = "多指移动了";
+                },
+                end: function(){
+                    p3.innerHTML = "手指抬起了";
+                }   
+            })
+        </script>
+    </body>
+</html>
